@@ -14,7 +14,7 @@ public class DBResourcesMethods {
         mongoDBManager = MongoDBManager.getInstance();
     }
     /**
-     * search resources in the DB by field applying the criteria
+     * Search resources in the DB by field applying the criteria
      * @param field
      * @param criteria
      * @return a string array
@@ -25,7 +25,7 @@ public class DBResourcesMethods {
         return resourceList;
     }
     /**
-     * get the resource id using the resource name
+     * Get the resource id using the resource name
      * @param name
      * @return
      */
