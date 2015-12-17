@@ -1,9 +1,6 @@
 package db;
-
 import org.apache.log4j.Logger;
-
 import java.util.ArrayList;
-
 /**
  * User: Jean Carlo Rodriguez
  * Date: 12/11/15
@@ -12,24 +9,21 @@ import java.util.ArrayList;
 public class DBResourcesMethods {
     MongoDBManager mongoDBManager;
     final static Logger logger = Logger.getLogger(DBResourcesMethods.class);
-
     public DBResourcesMethods() {
         logger.info("Using DBResourcesMethods");
         mongoDBManager = MongoDBManager.getInstance();
     }
-
     /**
      * search resources in the DB by field applying the criteria
      * @param field
      * @param criteria
      * @return a string array
      */
-    public ArrayList<String> likeFilterByCriteria(String field, String criteria) {
-        ArrayList<String> resourceList =  mongoDBManager.likeFilterByCriteria("resourcemodels",field,criteria);
+    public ArrayList<String> filterResourcesByCriteria(String field, String criteria) {
+        ArrayList<String> resourceList = mongoDBManager.filterByCriteria("resourcemodels",field,criteria);
         mongoDBManager.close();
         return resourceList;
     }
-
     /**
      * get the resource id using the resource name
      * @param name

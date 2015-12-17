@@ -21,17 +21,6 @@ public class DBRoomsMethods {
     }
     /**
      * This method allows filter rooms by a criteria
-     * @param field
-     * @param criteria
-     * @return an ArrayList of strings
-     */
-    public ArrayList<String> likeFilterByCriteria(String field, String criteria) {
-        ArrayList<String> roomsList = mongoDBManager.likeFilterByCriteria("rooms",field,criteria);
-        mongoDBManager.close();
-        return roomsList;
-    }
-    /**
-     * This method allows filter rooms by a criteria
      * @param criteria
      * @return an ArrayList of String
      */

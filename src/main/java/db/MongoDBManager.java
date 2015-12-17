@@ -28,7 +28,7 @@ public class MongoDBManager {
         return instance;
     }
     /**
-     * gets a collection from the Data Base
+     * Gets a collection from the Data Base
      * @param collectionName
      * @return
      */
@@ -43,17 +43,17 @@ public class MongoDBManager {
         instance = null;
     }
     /**
-     * search in the data base with some criteria
+     * Search in the data base with some criteria
      * @param collection
      * @param field
      * @param criteria
      * @return
      */
-    public ArrayList<String> likeFilterByCriteria(String collection, String field,String criteria) {
+    public ArrayList<String> filterByCriteria(String collection, String field, String criteria) {
         final String fieldName = field;
         final ArrayList<String> list = new ArrayList<String>();
-        MongoCollection<Document> roomsCollation = MongoDBManager.getInstance().getCollection(collection);
-        FindIterable<Document> rooms = roomsCollation
+        MongoCollection<Document> documentsCollection = getCollection(collection);
+        FindIterable<Document> rooms = documentsCollection
                 .find(new Document(fieldName, new BasicDBObject("$regex", criteria)));
         rooms.forEach(new Block<Document>() {
             @Override
@@ -65,16 +65,16 @@ public class MongoDBManager {
     }
     /**
      * This method allows get Id
-     * @param collation
+     * @param collection
      * @param findBy
      * @param value
      * @return a String
      */
-    public String getId(String collation, String findBy, String value) {
+    public String getId(String collection, String findBy, String value) {
         final Document[] idObject = new Document[1];
         String id;
-        MongoCollection<Document> roomsCollation = MongoDBManager.getInstance().getCollection(collation);
-        FindIterable<Document> idList = roomsCollation.find(eq(findBy, value));
+        MongoCollection<Document> roomsCollection = getCollection(collection);
+        FindIterable<Document> idList = roomsCollection.find(eq(findBy, value));
         idList.forEach(new Block<Document>() {
             @Override
             public void apply(Document document) {

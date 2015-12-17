@@ -97,7 +97,7 @@ public class Resource {
     public void theResultOfFilterShouldBeTheSameResourcesFotTheUIAndTheDB(){
         DBResourcesMethods dbResourcesMethods = new DBResourcesMethods();
         ArrayList<String> actualResult = resourcesPage.getActualTheListOfResources();
-        ArrayList<String> expectedResult = dbResourcesMethods.likeFilterByCriteria("name",criteria);
+        ArrayList<String> expectedResult = dbResourcesMethods.filterResourcesByCriteria("name", criteria);
 
         Assert.assertEqualsNoOrder(actualResult.toArray(),expectedResult.toArray(), "Comparing if the resource obtained from the UI are the same that the DB");
 
