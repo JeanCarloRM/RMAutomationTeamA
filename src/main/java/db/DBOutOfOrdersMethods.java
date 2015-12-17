@@ -20,8 +20,7 @@ public class DBOutOfOrdersMethods {
      * @return a String (id)
      */
     public String getOutOfOrderId(String value) {
-        String outOfOrderId = MongoDBManager.getInstance().getId("outoforders", "title", value);
-        mongoDBManager.close();
+        String outOfOrderId = mongoDBManager.getId("outoforders", "title", value);
         return outOfOrderId;
     }
 }

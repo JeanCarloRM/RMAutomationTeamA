@@ -26,7 +26,8 @@ public class DBRoomsMethods {
      */
     public ArrayList<String> filterRoomsByCriteria(String criteria) {
         final ArrayList<String> roomsList = new ArrayList<String>();
-        MongoCollection<Document> roomsCollection = MongoDBManager.getInstance().getCollection("rooms");
+        mongoDBManager.open();
+        MongoCollection<Document> roomsCollection = mongoDBManager.getCollection("rooms");
         FindIterable<Document> rooms = roomsCollection
                 .find(new Document("$or", asList( new Document(
                         "customDisplayName", new BasicDBObject("$regex", criteria)),
@@ -47,9 +48,7 @@ public class DBRoomsMethods {
      * @return a String
      */
     public String getRoomId(String value) {
-        mongoDBManager = MongoDBManager.getInstance();
         String roomId = mongoDBManager.getId("rooms", "customDisplayName", value);
-        mongoDBManager.close();
         return roomId;
     }
 }

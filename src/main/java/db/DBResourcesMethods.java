@@ -14,23 +14,22 @@ public class DBResourcesMethods {
         mongoDBManager = MongoDBManager.getInstance();
     }
     /**
-     * Search resources in the DB by field applying the criteria
+     * search resources in the DB by field applying the criteria
      * @param field
      * @param criteria
      * @return a string array
      */
-    public ArrayList<String> filterResourcesByCriteria(String field, String criteria) {
+    public ArrayList<String> likeFilterByCriteria(String field, String criteria) {
         ArrayList<String> resourceList = mongoDBManager.filterByCriteria("resourcemodels",field,criteria);
-        mongoDBManager.close();
         return resourceList;
     }
     /**
-     * Get the resource id using the resource name
+     * get the resource id using the resource name
      * @param name
      * @return
      */
     public String getResourceId(String name) {
-        String resourceId = MongoDBManager.getInstance().getId("resourcemodels", "name", name);
+        String resourceId = mongoDBManager.getId("resourcemodels", "name", name);
         return resourceId;
     }
 }
