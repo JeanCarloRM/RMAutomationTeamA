@@ -12,15 +12,15 @@ Feature: Meetings
     And the Meeting information should be displayed in the Next section of Main page
     And the Meeting should be listed in the Meetings of Room using the API
     Examples:
-      | Organizer   | Subject | From  | To    | Attendees         | Body      |
-      | Ariel.Rojas | meeting | 17:00 | 17:30 | test@exchange.com | Important |
-      | miguel      |meeting 2| 17:05 | 17:25 |                   |           |
-      | JeanCarlo   | .-.-./  | 17:10 | 17:40 | test@exchange.com |           |
+      | Organizer   | Subject | From  | To    | Attendees           | Body      |
+      | Ariel.Rojas | meeting | 17:00 | 17:30 | test1@forest1.local | Important |
+      | miguel      |meeting 2| 17:05 | 17:25 |                     |           |
+      | JeanCarlo   | .-.-./  | 17:10 | 17:40 | test1@forest1.local |           |
 
   Scenario: Try to create a meeting at the same time than other meeting
     Given I navigate to Available section
-      And I have a Meeting with the following information: "organizer", "meeting API", "08:20", "11:00", "test@exchange.com", "Important for API"
-    When I create other Meeting with the following information: "Carla Flores", "meeting UI", "08:20", "11:00", "test@exchange.com", "Important for UI"
+      And I have a Meeting with the following information: "organizer", "meeting API", "08:20", "11:00", "test1@forest1.local", "Important for API"
+    When I create other Meeting with the following information: "Carla Flores", "meeting UI", "08:20", "11:00", "test1@forest1.local", "Important for UI"
     Then an error message should be displayed
       And the second Meeting should not be displayed in the Schedule bar
       And the second Meeting information should not be displayed in the Next section
@@ -29,7 +29,7 @@ Feature: Meetings
   @removeMeeting
   Scenario: Remove a meeting
     Given I navigate to Available section
-      And I have a Meeting with the following information: "organizer", "meeting API", "15:00", "16:00", "test@exchange.com", "Important"
+      And I have a Meeting with the following information: "organizer", "meeting API", "15:00", "16:00", "test1@forest1.local", "Important"
     When I remove the Meeting
     Then an information message should be displayed "Meeting successfully removed"
       And the meeting should not be displayed in the Schedule bar
@@ -38,8 +38,8 @@ Feature: Meetings
 
   Scenario: Update a meeting
     Given I navigate to Available section
-      And I have a Meeting with the following information: "JeanCarlo.Rodriguez", "meeting API", "16:00", "17:00", "test@exchange.com", "this meeting is update"
-    When I update the meeting information: "Miguel.Terceros", "meeting UI update", "16:10", "17:30", "test@exchange.com", "meeting updated"
+      And I have a Meeting with the following information: "JeanCarlo.Rodriguez", "meeting API", "16:00", "17:00", "test1@forest1.local", "this meeting is update"
+    When I update the meeting information: "Miguel.Terceros", "meeting UI update", "16:10", "17:30", "test1@forest1.local", "meeting updated"
     Then an information message should be displayed "Meeting successfully updated"
       And the Meeting should be displayed in the Schedule bar
       And the Meeting information should be displayed in the Next section of Main page
@@ -54,7 +54,7 @@ Feature: Meetings
     And the Meeting should not be listed in the meetings of Room using the API
 
     Examples:
-      |Organizer |Subject  |From |To   |Attendees         |Body       |Error                   |
-      |          |meeting  |14:00|14:30|test@exchange.com |Be on Time |Organizer is required   |
-      |JeanCarlo |         |15:00|15:30|                  |Bring Paper|Subject is required     |
-      |Ariel     |planning |16:00|15:30|                  |Bring Paper|Start time must be smaller than end time|
+      |Organizer |Subject  |From |To   |Attendees           |Body       |Error                   |
+      |          |meeting  |14:00|14:30|test1@forest1.local |Be on Time |Organizer is required   |
+      |JeanCarlo |         |15:00|15:30|                    |Bring Paper|Subject is required     |
+      |Ariel     |planning |16:00|15:30|                    |Bring Paper|Start time must be smaller than end time|

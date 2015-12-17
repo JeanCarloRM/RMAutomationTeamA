@@ -1,5 +1,6 @@
 package ui.pages.admin;
 
+import entities.OutOfOrderEntity;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -58,77 +59,65 @@ public class OutOfOrderPlanningPage extends RoomMenuPage {
 
     /**
      * This method allows configure out of order a room
-     * @param outOfOrder is the state
-     * @param hourStart is the start time (hour)
-     * @param hourEnd is the end time (hour)
-     * @param meridian is the meridian state (PM or AM)
+     * @param outOfOrderEntity
      * @return the ConferenceRooms page
      */
-    public ConferenceRoomsPage configureOutOfOrder(String outOfOrder, String hourStart, String hourEnd, String meridian) {
+    public ConferenceRoomsPage configureOutOfOrder(OutOfOrderEntity outOfOrderEntity) {
         outOfOrderDropDown.click();
-        outOfOrderOption = By.xpath("//ul//a[contains(text(), '"+ outOfOrder +"')]");
+        outOfOrderOption = By.xpath("//ul//a[contains(text(), '"+ outOfOrderEntity.getTitle() +"')]");
         driver.findElement(outOfOrderOption).click();
         int hourActualStart = Integer.parseInt(getHourActualStart());
-        int hourExpectStart = Integer.parseInt(hourStart);
+        int hourExpectStart = Integer.parseInt(outOfOrderEntity.getStartHour());
+        String meridianStateStart = getStateMeridianStart();
         int hourActualEnd = Integer.parseInt(getHourActualEnd());
-        int hourExpectEnd = Integer.parseInt(hourEnd);
-        while(hourActualStart != hourExpectStart) {
-            if(hourExpectStart > hourActualStart ) {
-                if(!(getStateMeridianStart().equals(meridian))) {
-                    stateMeridianStartButton.click();
-                    incrementHourStartButton.click();
-                    hourActualStart++;
-                }
-                else {
-                    incrementHourStartButton.click();
-                    hourActualStart++;
-                }
-            }
-            else {
-                if(!(getStateMeridianStart().equals(meridian))) {
-                    stateMeridianStartButton.click();
-                    decrementHourStartButton.click();
-                    hourActualStart--;
-                }
-                else {
-                    decrementHourStartButton.click();
-                    hourActualStart--;
-                }
-            }
-        }
-
-        while(hourActualEnd != hourExpectEnd) {
-            if(hourExpectEnd > hourActualEnd ) {
-                if(!(getStateMeridianEnd().equals(meridian))) {
-                    stateMeridianEndButton.click();
-                    incrementHourEndButton.click();
-                    hourActualEnd++;
-                }
-                else {
-                    incrementHourEndButton.click();
-                    hourActualEnd++;
-                }
-            }
-            else {
-                if(!(getStateMeridianEnd().equals(meridian))) {
-                    stateMeridianEndButton.click();
-                    decrementHourEndButton.click();
-                    hourActualEnd--;
-                }
-                else {
-                    decrementHourEndButton.click();
-                    hourActualEnd--;
-                }
-            }
-        }
-        if(!(getStateMeridianStart().equals(meridian))) {
-            stateMeridianStartButton.click();
-        }
-        if(!(getStateMeridianEnd().equals(meridian))) {
-            stateMeridianEndButton.click();
-        }
+        int hourExpectEnd = Integer.parseInt(outOfOrderEntity.getEndHour());
+        String meridianStateEnd = getStateMeridianEnd();
+        placeHour(outOfOrderEntity, hourActualStart, hourExpectStart, meridianStateStart, stateMeridianStartButton, incrementHourStartButton, decrementHourStartButton);
+        placeHour(outOfOrderEntity, hourActualEnd, hourExpectEnd, meridianStateEnd,stateMeridianEndButton, incrementHourEndButton, decrementHourEndButton);
         OutOfOrderPlanningPage.super.clickSaveRoom();
         return new ConferenceRoomsPage();
+    }
+
+    /**
+     * Places an hour specified
+     * @param outOfOrderEntity
+     * @param hourActual
+     * @param hourExpect (Start hour)
+     * @param meridianState (PM or AM)
+     * @param meridianStateButton
+     * @param incrementHourButton
+     * @param decrementHourButton
+     */
+    private void placeHour(OutOfOrderEntity outOfOrderEntity, int hourActual, int hourExpect ,String meridianState, WebElement meridianStateButton, WebElement incrementHourButton, WebElement decrementHourButton) {
+        while(hourActual != hourExpect) {
+            if(hourExpect > hourActual ) {
+                if(!(meridianState.equals(outOfOrderEntity.getMeridian()))) {
+                    meridianState = outOfOrderEntity.getMeridian();
+                    meridianStateButton.click();
+                    incrementHourButton.click();
+                    hourActual++;
+                }
+                else {
+                    incrementHourButton.click();
+                    hourActual++;
+                }
+            }
+            else {
+                if(!(meridianState.equals(outOfOrderEntity.getMeridian()))) {
+                    meridianState = outOfOrderEntity.getMeridian();
+                    meridianStateButton.click();
+                    decrementHourButton.click();
+                    hourActual--;
+                }
+                else {
+                    decrementHourButton.click();
+                    hourActual--;
+                }
+            }
+        }
+        if(!(meridianState.equals(outOfOrderEntity.getMeridian()))) {
+            meridianStateButton.click();
+        }
     }
 
     /**

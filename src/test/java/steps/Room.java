@@ -61,14 +61,14 @@ public class Room {
 
     @And("^I edit the displayName \"([^\"]*)\" ,code \"([^\"]*)\" and capacity \"([^\"]*)\"$")
     public void editDataRoom(String displayName, String code, String capacity) {
-        roomInfoPage.editRoom(displayName, code, capacity);
         roomEntity.setAllFields(displayName, code, capacity);
+        roomInfoPage.editRoom(roomEntity);
         conferenceRoomsPage = roomInfoPage.clickSaveRoom();
     }
 
     @Then("^a information message should be displayed$")
     public void informationMessageDisplayed() {
-        Assert.assertEquals(conferenceRoomsPage.getRoomModifiedMessagePopUp(), "Room successfully Modified");
+        Assert.assertEquals(conferenceRoomsPage.getRoomModifiedMessagePopUp(), "Room successfully Modified", "information message displayed");
     }
 
     @And("^the Room data should be the edited$")
@@ -77,9 +77,9 @@ public class Room {
         String actualDisplayName = roomInfoPage.getDisplayName();
         String actualCode = roomInfoPage.getCode();
         String actualCapacity = roomInfoPage.getCapacity();
-        Assert.assertEquals(actualDisplayName, roomEntity.getDisplayName());
-        Assert.assertEquals(actualCode, roomEntity.getCode());
-        Assert.assertEquals(actualCapacity, roomEntity.getCapacity());
+        Assert.assertEquals(actualDisplayName, roomEntity.getDisplayName(), "comparing displayName by UI");
+        Assert.assertEquals(actualCode, roomEntity.getCode(), "comparing code by UI");
+        Assert.assertEquals(actualCapacity, roomEntity.getCapacity(), "comparing capacity by UI");
         conferenceRoomsPage = roomInfoPage.clickSaveRoom();
     }
 
@@ -90,9 +90,9 @@ public class Room {
         String actualDisplayName = jsonObject.getString("customDisplayName");
         String actualCode = jsonObject.getString("code");
         String actualCapacity = String.valueOf(jsonObject.getInt("capacity"));
-        Assert.assertEquals(actualDisplayName, roomEntity.getDisplayName());
-        Assert.assertEquals(actualCode, roomEntity.getCode());
-        Assert.assertEquals(actualCapacity, roomEntity.getCapacity());
+        Assert.assertEquals(actualDisplayName, roomEntity.getDisplayName(), "comparing displayName by API");
+        Assert.assertEquals(actualCode, roomEntity.getCode(), "comparing code by API");
+        Assert.assertEquals(actualCapacity, roomEntity.getCapacity(), "comparing capacity by API");
     }
 
 
@@ -110,7 +110,7 @@ public class Room {
         Collections.sort(roomsList);
         int position = 0;
         for(String roomDisplayName : roomDisplayNames) {
-            Assert.assertEquals(roomsList.get(position), roomDisplayName);
+            Assert.assertEquals(roomsList.get(position), roomDisplayName, "comparing displayName by UI");
             position++;
         }
     }
@@ -122,13 +122,13 @@ public class Room {
 
     @And("^I configure the Room with the option out of order \"([^\"]*)\" at time \"([^\"]*)\" to \"([^\"]*)\" - \"([^\"]*)\"$")
     public void configureTheRoomWithTheOptionOutOfOrderAtTimeTo(String outOfOrder, String hourStart, String hourEnd, String meridian) {
-        outOfOrderEntity.setTitle(outOfOrder);
-        conferenceRoomsPage = outOfOrderPlanningPage.configureOutOfOrder(outOfOrder, hourStart, hourEnd, meridian);
+        outOfOrderEntity.setAllFields(outOfOrder, hourStart, hourEnd, meridian);
+        conferenceRoomsPage = outOfOrderPlanningPage.configureOutOfOrder(outOfOrderEntity);
     }
 
     @And("^should display an icon on the Out Of Order column$")
     public void displayIconOnTheOutOfOrderColumn() {
-        Assert.assertTrue(conferenceRoomsPage.isPresentOutOfOrderIcon());
+        Assert.assertTrue(conferenceRoomsPage.isPresentOutOfOrderIcon(), "out of order icon is displayed");
     }
 
     @And("^the Out Of Order state should be obtained using the API$")
@@ -136,12 +136,12 @@ public class Room {
         apiOutOfOrdersMethods = new APIOutOfOrdersMethods();
         JSONObject jsonObject = apiOutOfOrdersMethods.getJson(outOfOrderEntity.getTitle());
         String actualTitle = jsonObject.getString("title");
-        Assert.assertEquals(actualTitle, outOfOrderEntity.getTitle());
+        Assert.assertEquals(actualTitle, outOfOrderEntity.getTitle(), "comparing out of order title by API");
     }
 
     @Then("^a error message should be displayed$")
     public void aErrorMessageShouldBeDisplayed() {
-        Assert.assertTrue(outOfOrderPlanningPage.errorOutOfOrderIsDisplayed());
+        Assert.assertTrue(outOfOrderPlanningPage.errorOutOfOrderIsDisplayed(), "error message displayed");
         conferenceRoomsPage = outOfOrderPlanningPage.clickCancelButton();
     }
 
@@ -150,7 +150,7 @@ public class Room {
         apiOutOfOrdersMethods = new APIOutOfOrdersMethods();
         JSONObject jsonObject = apiOutOfOrdersMethods.getJson(outOfOrderEntity.getTitle());
         String code = jsonObject.getString("code");
-        Assert.assertEquals(code, "NotFoundError");
+        Assert.assertEquals(code, "NotFoundError", "out of order is not obtained");
     }
 
     @And("^I select the Resource in the Conference Room page header$")

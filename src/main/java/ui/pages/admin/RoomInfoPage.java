@@ -1,5 +1,6 @@
 package ui.pages.admin;
 
+import entities.RoomEntity;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -63,25 +64,12 @@ public class RoomInfoPage extends RoomMenuPage {
 
     /**
      * This method allows edit the room data
-     * @param name
-     * @param code
-     * @param capacity
+     * @param roomEntity
      */
-    public void editRoom(String name, String code, String capacity) {
-        editDisplayName(name);
-        editCode(code);
-        editCapacity(capacity);
-    }
-
-    /**
-     * This method allows clear the data entered
-     * @param beforeDisplayName
-     */
-    public void clearDataEntered(String beforeDisplayName){
-        displayNameInput.clear();
-        displayNameInput.sendKeys(beforeDisplayName);
-        codeInput.clear();
-        capacityInput.clear();
+    public void editRoom(RoomEntity roomEntity) {
+        editDisplayName(roomEntity.getDisplayName());
+        editCode(roomEntity.getCode());
+        editCapacity(roomEntity.getCapacity());
     }
 
     /**

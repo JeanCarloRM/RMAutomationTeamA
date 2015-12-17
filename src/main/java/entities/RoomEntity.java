@@ -34,7 +34,7 @@ public class RoomEntity {
     }
 
     /**
-     * set all the Field in one method
+     * Set all the Field in one method
      * @param displayName
      * @param code
      * @param capacity

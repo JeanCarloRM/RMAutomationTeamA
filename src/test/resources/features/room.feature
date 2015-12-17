@@ -35,13 +35,13 @@ Feature: Rooms
   Scenario Outline: Place a room to out of order
     Given I open "Floor1Room15" Room for edit
     When I go to Out of Order Planning Tab
-      And I configure the Room with the option out of order "<Out Of Order>" at time "<hour1>" to "<hour2>" - "<meridian>"
+      And I configure the Room with the option out of order "<Out Of Order>" at time "<From>" to "<To>" - "<meridian>"
     Then a information message should be displayed
       And should display an icon on the Out Of Order column
       And the Out Of Order state should be obtained using the API
 
     Examples:
-      | Out Of Order           |  hour1   | hour2 | meridian  |
+      | Out Of Order           |  From    | To    | meridian  |
       | Closed for maintenance |  10      | 11    |   PM      |
       | Closed for reparations |  9       | 10    |   PM      |
 
@@ -50,13 +50,13 @@ Feature: Rooms
   Scenario Outline: Place a room to out of order with invalid date
     Given I open "Floor1Room100" Room for edit
     When I go to Out of Order Planning Tab
-    And I configure the Room with the option out of order "<Out Of Order>" at time "<hour1>" to "<hour2>" - "<meridian>"
+    And I configure the Room with the option out of order "<Out Of Order>" at time "<From>" to "<To>" - "<meridian>"
     Then a error message should be displayed
     And the Out Of Order state should not be obtained using the API
 
     Examples:
-      | Out Of Order                  |  hour1   | hour2 | meridian  |
+      | Out Of Order                  |  From    | To    | meridian  |
       | Temporarily Out of Order      |  11      | 10    |   PM      |
-      | Reserved for a special event  |   5      | 2     |   PM      |
+      | Reserved for a special event  |  5       | 2     |   PM      |
 
 
